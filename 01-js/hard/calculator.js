@@ -15,7 +15,47 @@
 
   Once you've implemented the logic, test your code by running
 */
+window.result = 0
+class Calculator {
 
-class Calculator {}
+  constructor(){
+    this.result = window.result
+  }
+
+  add(num) {
+    this.result += num
+  }
+
+  subtract(num) {
+    this.result -= num
+  }
+
+  multiply(num) {
+    this.result *= num
+  }
+
+  divide(num) {
+    if(num!=0){
+    this.result /= num}
+  }
+
+  clear(){
+    this.result = 0 
+  }
+
+  getResult(){
+    return this.result
+  }
+
+  calculate(str){
+    str = str.replace(/[W_]/g,"")
+    
+  }
+
+
+
+
+
+}
 
 module.exports = Calculator;
