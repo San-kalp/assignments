@@ -30,18 +30,37 @@ const fs = require('fs')
 // sankalpReadFile().then(onDone)
 
 
+// function sankalpAsyncFunction(){
+//     let p = new Promise(function(resolve){
+//         resolve("Hi there")
+//     })
+
+//     return p
+// }
+
+
+
+
+// const value = sankalpAsyncFunction()
+// value.then(function(data){
+//     console.log(data)
+// })
+
+
 function sankalpAsyncFunction(){
     let p = new Promise(function(resolve){
         resolve("Hi there")
     })
-
-    return p
+    return p;
 }
 
 
-
-
-const value = sankalpAsyncFunction()
-value.then(function(data){
+function onDone(data){
     console.log(data)
-})
+}
+
+function main(){
+    sankalpAsyncFunction().then(onDone)
+}
+
+main()
