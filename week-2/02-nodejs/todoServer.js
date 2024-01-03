@@ -41,8 +41,9 @@
  */
   const express = require('express');
   const bodyParser = require('body-parser');
-  const uuid = require('uuid')
-  
+  const { v4: uuidv4 } = require('uuid');
+  const port = process.env.PORT || 3000
+
   
   const app = express();
   
@@ -50,5 +51,58 @@
 
   const todos=[]
 
+  app.get('/todos',function(req,res){
+    res.json(todos)
+  })
+
+  app.post('/todos',function(req,res){
+    const newtodo = {
+      id : uuidv4(),
+      title : req.body.title,
+      descr : req.body.descr,
+    }
+    todos.push(newtodo)
+    res.json(newtodo)
+  })
+
+
+app.get('/todos/:id',function(req,res){
+  const id = req.params.id
+  const todo = todos.find(todo => todo.id === id)
+
+  if (!todo){
+    res.status(404).json({error:'Todo with that id not found'})
+  }else{
+    res.json(todo)
+  }
+})
+
+
+app.put('/todos/:id',function(req,res){
+  const id = req.params.id 
+  const todo = todos.find(todo => todo.id === id )
+  if (!todo){
+    res.status(404).json({error:'Todo with that id not found'})
+  }else{
+    todo.title = req.body.title
+    todo.descr = req.body.descr
+    res.send(todo)
+  }
+
+})
+
+
+app.delete('/todos/:id',function(req,res){
+  const id = req.params.id 
+  const todo = todos.find(todo => todo.id === id )
+  if (!todo){
+    res.status(404).json({error:'Todo with that id not found'})
+  }else {
+    todos.splice(id,1)
+    res.status(200).send()
+  }
+})
   
-  module.exports = app;
+app.listen(port, function () {
+    console.log(`Server listening on port ${port}`);
+});
