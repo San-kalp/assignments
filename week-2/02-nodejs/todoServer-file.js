@@ -47,6 +47,56 @@ app.post('/todos',function(req,res){
 
 })
 
+app.put('/todo/:id',function(req,res){
+    let index = 0 
+    let id = req.params.id
+    function sankalpReadFile(){
+        return new Promise(function(resolve){
+            fs.readFile('todo.json','utf-8',function(err,data){
+                if (err){
+                    res.status(500).send("Failed to update the given todo")
+                }else{
+                    todos=JSON.parse(data)
+                    for (let i = 0 ; i < todos.length; i++){
+                        if(todos[i].id == id){
+                            index = i
+                            console.log("Inside",index)
+                            resolve(index)
+                        }
+                    }
+    
+                }
+            })
+            
+        })
+
+}
+    sankalpReadFile().then(assign)
+
+
+    function assign(value){
+        index = value
+    }
+    console.log("Outside",index)
+
+    if (index == -1){
+        res.status(500).send("Index not found")
+    }else {
+        fs.readFile('todo.json','utf-8',function(err,data){
+            todos = JSON.parse(data)
+            todos[index].title = req.body.title
+            todos[index].descr = req.body.descr
+            fs.writeFile('todo.json',JSON.stringify(todos),'utf-8',function(err){
+                if (err){
+                    res.status(500).send("Index found but failed")
+                }else{
+                    res.status(200).send("Successfully updated")
+                }
+            })
+        })
+    }
+})
+
 
 app.listen(port, function () {
     console.log(`Server listening on port ${port}`);
