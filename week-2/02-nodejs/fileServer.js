@@ -17,5 +17,37 @@ const fs = require('fs');
 const path = require('path');
 const app = express();
 
+const port = process.env.PORT||3000
+ 
+let result = ""
 
-module.exports = app;
+app.get('/files',function(req,res){
+  fs.readdir(path.join(__dirname,'./files/'),function(err,files){
+    if (err){
+      return res.status(500).json({error:'Failed to retrieve files'})
+    }else{
+       result = JSON.stringify(files)
+       res.send(result)
+    }
+  })
+})
+
+app.get('/files/:fileName',function(req,res){
+  const fileName = req.params.fileName
+  console.log(fileName)
+  filePath = path.join(__dirname,'./files/',fileName)
+  fs.readFile(filePath,'utf-8',function(err,data){
+    if (err){
+      return res.status(500).send('File not found')
+    }else{
+      res.send(data)
+    }
+  })
+})
+
+
+
+
+app.listen(port, function(){
+  console.log(`Example app listening on port ${port}`)
+})
