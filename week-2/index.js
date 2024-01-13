@@ -55,6 +55,39 @@ app.post('/:name/:statKid',function(req,res){
 
 })
 
+app.put('/:name/:id',function(req,res){
+    const name = req.params.name
+    const id = req.params.id
+  
+    for (let i = 0 ; i<users.length; i++){
+        if(users[i].name == name){
+            if(users[i].kidneys[id].healthy){
+                res.send("No need to change. It is already healthy!!!!")
+            }else{
+                users[i].kidneys[id].healthy = true 
+            }
+        res.status(200).send('Added')
+        }
+    }
+})
+
+
+app.delete('/:name',function(req,res){
+    const name = req.params.name
+
+  
+    for (let i = 0 ; i<users.length; i++){
+        if(users[i].name == name){
+            if(!users[i].kidneys[id].healthy){
+                
+            }
+        res.status(200).send('Added')
+        }
+    }
+})
+
+
+
 
 
 app.listen(port)
